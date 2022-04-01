@@ -11,12 +11,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class StepDefinitions {
 
     private WebDriver webDriver;
     private String baseUrl = "https://www.kayak.ch";
+
 
     @Before
     public void setup() {
@@ -54,7 +57,7 @@ public class StepDefinitions {
 
     @When("a user choose the departure {string} and return {string} time range")
     public void a_user_choose_the_departure_and_return_time_range(String dateFrom, String dateTo) throws InterruptedException{
-        //locate and open widget calendar
+        /*//locate and open widget calendar
         WebElement depDate = webDriver.findElement(By.className("cQtq-date"));
         depDate.click();
         Thread.sleep(5000);
@@ -71,7 +74,27 @@ public class StepDefinitions {
         Thread.sleep(4000);
         //simulate keyboard action and close the datapicker
         Actions keyDown2 = new Actions(webDriver); keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.DOWN, Keys.ENTER)).perform();
-        Thread.sleep(5000);
+        Thread.sleep(5000); */
+            String dateFromX = "[aria-label='" + dateFrom + "']" ;
+
+            WebElement depDate = webDriver.findElement(By.cssSelector("body > div:nth-child(1) > div:nth-child(1) > main:nth-child(5) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > section:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > span:nth-child(2)"));
+            depDate.click();
+            Thread.sleep(5000);
+
+            WebElement depDate2 = webDriver.findElement(By.cssSelector(dateFromX));
+            depDate2.click();
+            Thread.sleep(5000);
+
+            WebElement depDate2r = webDriver.findElement(By.cssSelector(dateFromX));
+            depDate2r.click();
+
+            WebElement arrDate = webDriver.findElement(By.cssSelector("body > div:nth-child(1) > div:nth-child(1) > main:nth-child(5) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > section:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > span:nth-child(1)"));
+            arrDate.click();
+            Thread.sleep(5000);
+            String dateToX = "[aria-label='" + dateTo + "']" ;
+            WebElement arrDate2 = webDriver.findElement(By.cssSelector(dateToX));
+            arrDate2.click();
+            Thread.sleep(5000);
 
     }
 
@@ -88,22 +111,38 @@ public class StepDefinitions {
 
 
     @When("a user choose the max price in CHF {string}")
-    public void a_user_choose_the_max_price_in_CHF(String string) {
-        //need to choose the max price from the widget
+    public void a_user_choose_the_max_price_in_CHF(String string) throws InterruptedException{
+        webDriver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+        js.executeScript("window.scrollBy(0,2000)");
+        Thread.sleep(4000);
+        //WebElement price = webDriver.findElement(By.cssSelector("div[class='filterSectionTitle']"));
+        //price.click();
+        //Thread.sleep(10000);
+        //WebElement cursor = webDriver.findElement(By.className("handle right r9-rangeSlider-handle-active"));
+        // cursor.sendKeys(Keys.chord(Keys.LEFT, Keys.LEFT));
+        Thread.sleep(10000);
+
+        //-------------need to choose the max price from the widget-------------
+
+
 
     }
 
 
     @Then("the system shows the flights")
     public void the_system_shows_the_flights()  {
-        //need to assert the result list with the price
+        List<WebElement> list = webDriver.findElements(By.cssSelector("searchResultsList"));
+        Assert.assertTrue("Text not found!", list.size() < 1);
+        //webDriver.getPageSource().contains("col-info result-column");
 
+        //-------------need to assert the result list with the price-------------
     }
 
     @After
     public void end() {
         System.out.println("Process End");
-        if (webDriver != null) {
+       if (webDriver != null) {
             webDriver.quit();
         }
     }

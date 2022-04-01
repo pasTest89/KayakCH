@@ -7,7 +7,7 @@ Feature: Search Roadtrip flight
   Scenario: Return roadtrip
     Given a user connected to kayak site
     When a user choose the departure "FCO" and arrival "ZRH" airports
-    And a user choose the departure "10.05.2022" and return "15.05.2022" time range
+    And a user choose the departure "22 maggio 2022" and return "24 giugno 2022" time range
     And a user start the search
     And a user choose the max price in CHF "340"
     Then the system shows the flights
